@@ -17,7 +17,7 @@ eureka:
       defaultZone: http://172.17.0.1:8081/eureka
   instance:
     prefer-ip-address: true
-    ipAddress: 127.0.0.1
+    ipAddress: 172.17.0.1
     instance-id: ${spring.application.name}:${server.port}
     
 # 服务管理配置
