@@ -34,7 +34,7 @@ node {
         echo 'Building docker image which contains jar package.'
         docker.withRegistry(DOCKER_REG,REG_CREDENTIAL_ID){
       		customImage = docker.build(DOCKER_REPO + "/" + IMAGE_NAME)    
-      		customImage.push(IMAGE_TAG)
+      		customImage.tag(IMAGE_TAG)
     	}
     }
     
