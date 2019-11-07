@@ -9,9 +9,6 @@ node {
 	String REG_CREDENTIAL_ID = "9caf828c-33c7-4dda-9abe-e7e186274d74"
 	String GITHUB_CREDENTIAL_ID = "76777026-0e96-4a3c-a336-1a2fd16e442b"
 	
-	
-	
-	
 	String IMAGE_TAG=env.BUILD_NUMBER
 	String REMOVE_COMMAND='docker rm -f ' + IMAGE_NAME
 	String RUN_ARGS='--name ' + IMAGE_NAME + ' -p ' + PORT + ':' + PORT
