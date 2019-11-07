@@ -67,7 +67,7 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
 //	}
 	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public final PasswordEncoder passwordEncoder() {
 		return new Pbkdf2PasswordEncoder();
 	}
 }
