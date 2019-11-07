@@ -67,6 +67,6 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		return new FsdPasswordEncoder();
 	}
 }
