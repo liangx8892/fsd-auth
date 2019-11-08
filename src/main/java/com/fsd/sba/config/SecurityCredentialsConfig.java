@@ -2,7 +2,6 @@ package com.fsd.sba.config;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.fsd.sba.filter.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -14,7 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+
+import com.fsd.sba.filter.JwtUsernameAndPasswordAuthenticationFilter;
+import com.fsd.sba.config.JwtConfig;
 
 @EnableWebSecurity 	// Enable security config. This annotation denotes config for spring security.
 public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
@@ -40,7 +41,7 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
 		    // What's the authenticationManager()? 
 		    // An object provided by WebSecurityConfigurerAdapter, used to authenticate the user passing user's credentials
 		    // The filter needs this auth manager to authenticate the user.
-		    .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
+		    .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))	
 		.authorizeRequests()
 		    // allow all POST requests 
 		    .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()
@@ -68,6 +69,6 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new Pbkdf2PasswordEncoder();
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
@@ -12,8 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fsd.sba.config.JwtConfig;
-import com.fsd.sba.model.UserCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +21,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fsd.sba.config.JwtConfig;
+import com.fsd.sba.model.UserCredentials;
 import com.google.gson.JsonObject;
 
 import io.jsonwebtoken.Jwts;
@@ -53,7 +51,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		
-		try {
+			// 1. Get credentials from request
 			UserCredentials creds = new UserCredentials();
 			String userName = request.getParameter("userName");
 			String password = request.getParameter("password");
@@ -67,10 +65,6 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 			
 			// 3. Authentication manager authenticate the user, and use UserDetialsServiceImpl::loadUserByUsername() method to load the user.
 			return authManager.authenticate(authToken);
-			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 	
 	// Upon successful authentication, generate a token.
