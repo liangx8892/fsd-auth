@@ -39,10 +39,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				List<GrantedAuthority> grantedAuthorities = AuthorityUtils
 	                	.commaSeparatedStringToAuthorityList("ROLE_"+user.getRole());
 				logger.error("user password is: {}", user.getPassword());
-				return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), grantedAuthorities);
+				return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
 			}
 
 		} catch (Exception ex) {
+			logger.error("loadUserByUsername failed: {}", ex);
 			throw new UsernameNotFoundException(ex.getMessage());
 		}
 

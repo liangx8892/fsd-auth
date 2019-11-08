@@ -3,7 +3,7 @@ package com.fsd.sba.model;
 public class User {
 	
 	private Integer id;
-	private String userName;
+	private String email;
 	private String password;
 	private String role;
 	private String status;
@@ -13,11 +13,11 @@ public class User {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getUserName() {
-		return userName;
+	public String getEmail() {
+		return email;
 	}
-	public void setUsername(String userName) {
-		this.userName = userName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPassword() {
 		return password;
