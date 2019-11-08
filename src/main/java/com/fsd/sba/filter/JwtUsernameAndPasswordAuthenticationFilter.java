@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,9 +23,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.fsd.sba.client.AccountServiceClient;
 import com.fsd.sba.config.JwtConfig;
+import com.fsd.sba.model.User;
 import com.fsd.sba.model.UserCredentials;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -35,8 +41,8 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 	
 	private final JwtConfig jwtConfig;
 	
-//	@Autowired
-//	private AccountServiceClient accountclient;
+	@Autowired
+	private AccountServiceClient accountclient;
     
 	public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authManager, JwtConfig jwtConfig) {
 		this.authManager = authManager;
@@ -87,13 +93,21 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 			.signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret().getBytes())
 			.compact();
 		
-		// Add token to header
-//		response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
+
+		ResponseEntity<Object> result = accountclient.getUser(username);
+		Gson gson = new Gson();
+		String jsonResultStr = gson.toJson(result.getBody());
+		JsonParser parser = new JsonParser();
+		JsonObject userObject = (JsonObject) parser.parse(jsonResultStr);
+		User user = gson.fromJson(userObject.get("data").toString(), User.class);
+		
+		
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    JsonObject json = new JsonObject();
 	    json.addProperty("token", token);
-	    json.addProperty("username", username);
+	    json.addProperty("userName", username);
+	    json.addProperty("id", user.getId());
 	    json.addProperty("role", roles.get(0).split("_")[1]);
 	    response.getWriter().write(json.toString());
 	}
