@@ -41,8 +41,6 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 	
 	private final JwtConfig jwtConfig;
 	
-	@Autowired
-	private AccountServiceClient accountclient;
     
 	public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authManager, JwtConfig jwtConfig) {
 		this.authManager = authManager;
@@ -93,21 +91,12 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 			.signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret().getBytes())
 			.compact();
 		
-
-		ResponseEntity<Object> result = accountclient.getUser(username);
-		Gson gson = new Gson();
-		String jsonResultStr = gson.toJson(result.getBody());
-		JsonParser parser = new JsonParser();
-		JsonObject userObject = (JsonObject) parser.parse(jsonResultStr);
-		User user = gson.fromJson(userObject.get("data").toString(), User.class);
-		
 		
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    JsonObject json = new JsonObject();
 	    json.addProperty("token", token);
 	    json.addProperty("userName", username);
-	    json.addProperty("id", user.getId());
 	    json.addProperty("role", roles.get(0).split("_")[1]);
 	    response.getWriter().write(json.toString());
 	}
