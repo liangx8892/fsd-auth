@@ -14,10 +14,10 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://172.17.0.1:8081/eureka
+      defaultZone: http://localhost:8081/eureka
   instance:
     prefer-ip-address: true
-    ipAddress: 172.17.0.1
+    ipAddress: 127.0.0.1
     instance-id: ${spring.application.name}:${server.port}
     
 # 服务管理配置
@@ -42,18 +42,18 @@ spring:
   profiles: k8s
   application:
     name: fsd-auth
-          
 server:
   servlet:
     context-path: /auth
   port: 9002
-  
+
 eureka:
   client:
     service-url:
-      defaultZone: http://fsd-registry:8081/eureka
+      defaultZone: http://172.17.0.1:8081/eureka
   instance:
     prefer-ip-address: true
+    ipAddress: 172.17.0.1
     instance-id: ${spring.application.name}:${server.port}
 
 # 服务管理配置
@@ -62,7 +62,7 @@ management:
     web:
       exposure:
         include: "*"        #暴漏的接口，"*"表示所有web监控接口
-#        exclude:            #不暴漏的接口
+      #        exclude:            #不暴漏的接口
       base-path: /actuator  #监控根路径
     enabled-by-default: true
   endpoint:
@@ -70,4 +70,6 @@ management:
       show-details: ALWAYS
 
 swagger.enabled: true
+logging:
+  config: classpath:logback-boot_dev.xml
 
