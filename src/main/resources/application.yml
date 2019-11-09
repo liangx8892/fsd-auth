@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: @activeSpringProfile@
 ---
 spring:
   profiles: local
