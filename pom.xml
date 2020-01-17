@@ -113,7 +113,7 @@
 	</dependencyManagement>
 
 	<build>
-		<finalName>fsd-auth</finalName>
+		<finalName>app</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
