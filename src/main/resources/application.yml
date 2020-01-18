@@ -53,6 +53,7 @@ eureka:
       defaultZone: http://fsd-registry:8080/eureka
   instance:
     prefer-ip-address: true
+    ipAddress: ${spring.application.name}
     instance-id: ${spring.application.name}:${server.port}
 
 # 服务管理配置
